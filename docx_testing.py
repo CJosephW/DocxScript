@@ -10,6 +10,7 @@ import time
 directory = os.getcwd()
 database = "http://localhost:3000/v1/skills"
 
+headers = {'Content-Type':'application/json'}
 for filename in os.listdir(directory):
     if filename.endswith('.docx'):
 
@@ -29,7 +30,7 @@ for filename in os.listdir(directory):
         currentPost = {
             'title': table.cell(*titleLocation).text,
             'evaluator_instructions': table.cell(*evaluatorInstructionsLocation).text,
-            'candidate_driectives': table.cell(*candidateDirectivesLocation).text,
+            'candidate_directives': table.cell(*candidateDirectivesLocation).text,
         }
         docInfo = [table.cell(*titleLocation).text, table.cell(*evaluatorInstructionsLocation).text,
             table.cell(*taskLocation).text, table.cell(*performanceOutcomeLocation).text, table.cell(*candidateDirectivesLocation).text]
@@ -42,8 +43,8 @@ for filename in os.listdir(directory):
 
         print(table.cell(*taskLocation).text)
 
-        r = requests.post(url = database, json = currentPost)
-
+        r = requests.post(url = database,  headers=headers, timeout = (5, 14), json = currentPost)
+        print(r.text)
         
     else:
         continue
